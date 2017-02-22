@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
 
     //std::char delim = argv[1]; // test later
     char delim = ',';
-    std::ifstream inf ("/home/oliver/work/zq.Sarah_Flowers_OLink_GlycoProteinBuilder/3.GMML_GlycoProteinBuilder/glycans/CarbBuilderInput.txt");
+    std::ifstream inf ("/home/oliver/Programs/Cplusplus/CarbohydrateBuilder/CarbohydrateBuilder/inputs/CarbBuilderInput.txt");
     if (!inf)
     {
         std::cerr << "Problem opening input file; check path and filename" << std::endl;
@@ -98,7 +98,7 @@ int main(int argc, char *argv[])
 
     prep.push_back("/home/oliver/Programs/gems/gmml/dat/CurrentParams/leaprc_GLYCAM_06j-1_2014-03-14/GLYCAM_06j-1.prep");
 
-    std::string pdb_file_path = "/home/oliver/Desktop/test.pdb";
+    std::string pdb_file_path = "/home/oliver/Programs/Cplusplus/CarbohydrateBuilder/CarbohydrateBuilder/outputs/test.pdb";
     std::string parameter_file_path = "/home/oliver/Programs/gems/gmml/dat/CurrentParams/leaprc_GLYCAM_06j-1_2014-03-14/GLYCAM_06j.dat";
     std::string ion_parameter_file_path = "/home/oliver/Programs/gems/gmml/dat/CurrentParams/other/atomic_ions.lib";
 
@@ -115,32 +115,17 @@ int main(int argc, char *argv[])
         id = it->first;
         sequence = it->second;
 
-        outputFileName = "/home/oliver/work/zq.Sarah_Flowers_OLink_GlycoProteinBuilder/3.GMML_GlycoProteinBuilder/glycans/" + id + ".pdb";
+        outputFileName = "/home/oliver/Programs/Cplusplus/CarbohydrateBuilder/CarbohydrateBuilder/outputs/" + id + ".pdb";
 
         Assembly assembly;
 
         CondensedSequence *condensedSequence = new CondensedSequence(sequence);
         CondensedSequenceRotamersAndGlycosidicAnglesInfo rotamers_info = condensedSequence->GetCondensedSequenceRotamersAndGlycosidicAnglesInfo(condensedSequence->GetCondensedSequenceResidueTree());
         assembly.BuildAssemblyFromCondensedSequence(sequence, prep.at(0) ,parameter_file_path, true);
-        //assembly.BuildAllRotamersFromCondensedSequence(condensedSequence, prep.at(0), parameter_file_path, rotamers_info,   )
         IndexNameMap names;
 
         AssemblyVector structures = assembly.BuildAllRotamersFromCondensedSequence(sequence, prep.at(0), parameter_file_path, rotamers_info, names);
         std::cout << "We are here, check out " << names[0] << std::endl;
-
-
-
-        //assembly.BuildStructureByDistance();
-        //PdbFileSpace::PdbFile *outputPdbFile = assembly.BuildPdbFileStructureFromAssembly();
-        //outputPdbFile->Write(outputFileName);
-
-
-      //  assembly.BuildAssemblyFromCondensedSequence(seq, prep, parm, True)
-       // condensed_sequence = gmml.CondensedSequence(seq)
-      //  rotamers_glycosidic_angles_info = condensed_sequence.GetCondensedSequenceRotamersAndGlycosidicAnglesInfo(condensed_sequence.GetCondensedSequenceResidueTree())
-
-    //  //  names = gmml.int_string_map()
-      //  structures = assembly.BuildAllRotamersFromCondensedSequence(seq, prep, parm,rotamers_glycosidic_angles_info,names)
 
         int i = 0;
         for (AssemblyVector::iterator it = structures.begin(); it != structures.end(); ++it)
@@ -149,7 +134,7 @@ int main(int argc, char *argv[])
            Assembly *sub_Assembly = *it;
           // sub_Assembly->Print();
            PdbFileSpace::PdbFile *outputPdbFile = sub_Assembly->BuildPdbFileStructureFromAssembly();
-           outputFileName = "/home/oliver/work/zq.Sarah_Flowers_OLink_GlycoProteinBuilder/3.GMML_GlycoProteinBuilder/glycans/" + id + "_" + names[i] + ".pdb";
+           outputFileName = "/home/oliver/Programs/Cplusplus/CarbohydrateBuilder/CarbohydrateBuilder/outputs/" + id + "_" + names[i] + ".pdb";
            std::cout << "Attempting to write " << outputFileName << std::endl;
            outputPdbFile->Write(outputFileName);
            ++i;
